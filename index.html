@@ -6,29 +6,91 @@
       <meta name="keywords" content="Javascript, Shootout, Space, Game, Fun">
       <meta name="author" content="Rehan Raj">
     </head>
-    
+      <link rel="stylesheet" href="/style.css">
+<canvas id="myCanvas"></canvas>
     <script type="module">
-        //document.body.style.zoom = "80%";
-    
+      
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  var chromebook = false;
         // import kaboom lib
         import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
         
         // initialize kaboom context
         //kaboom();
         
-        
     
-    
+    if(w==1920&&h==929){
     
     kaboom({
-        //width: 1500,
-        //height: 700,
+      //1366 x 784
+        //width: 1920,
+        //height: 1080,
+      //height:h,
+      //width:w,
+        //scale:0.8,
         scaleMode: "stretch",
-        "fullscreen": true,
+        fullscreen: true,
         font: "sinko",
-        canvas: document.querySelector("#mycanvas"),
+        canvas: document.querySelector("#myCanvas"),
         background: [ 0, 0, 0 ],
     });
+}
+
+  else if(w==1536&&h==722){
+    kaboom({
+      //1366 x 784
+        //width: 1920,
+        //height: 1080,
+      //height:h,
+      //width:w,
+        scale:0.8,
+        scaleMode: "stretch",
+        //fullscreen: true,
+        font: "sinko",
+        canvas: document.querySelector("#myCanvas"),
+        background: [ 0, 0, 0 ],
+    });
+}
+
+      else if(w==1366&&h==617){
+    kaboom({
+      //1366 x 784
+        //width: 1920,
+        //height: 1080,
+      //height:h,
+      //width:w,
+        scale:0.71,
+        scaleMode: "stretch",
+        //fullscreen: true,
+        font: "sinko",
+        canvas: document.querySelector("#myCanvas"),
+        background: [ 0, 0, 0 ],
+    });
+        chromebook=true;
+}
+
+else{
+ kaboom({
+      //1366 x 784
+        //width: 1920,
+        //height: 1080,
+      //height:h,
+      //width:w,
+        scale:0.5,
+        scaleMode: "stretch",
+        //fullscreen: true,
+        font: "sinko",
+        canvas: document.querySelector("#myCanvas"),
+        background: [ 0, 0, 0 ],
+    });
+        chromebook=true;
+}
+  
+
+
+      
+      //debug.log("width: "+ w + " height: " +h)
     loadSprite("ufo", "https://cdn-icons-png.flaticon.com/512/1008/1008165.png")
     loadSprite("backg", "https://thevirus-limiter.github.io/shootout-in-space/sprites/bg_space_seamless.png")
     loadSprite("grass1", "https://thevirus-limiter.github.io/shootout-in-space/sprites/grass1.png")
@@ -72,10 +134,10 @@
     //
     //
     
-    loadSound("shoot", "https://cdn.pixabay.com/download/audio/2022/03/15/audio_38909ce077.mp3?filename=blaster-2-81267.mp3")
+    loadSound("shoot", "https://thevirus-limiter.github.io/shootout-in-space/sound/blaster-2-81267.mp3")
     loadSound("shoot1", "https://thevirus-limiter.github.io/shootout-in-space/sound/sound-effects-library-laser-gun.mp3")
     loadSound("music", "https://thevirus-limiter.github.io/shootout-in-space/sound/bettogh-helios-beam.mp3")
-    loadSound("coinPick", "https://cdn.pixabay.com/download/audio/2021/08/04/audio_a9afe06aac.mp3?filename=collectcoin-6075.mp3")
+    loadSound("coinPick", "https://thevirus-limiter.github.io/shootout-in-space/sound/collectcoin-6075.mp3")
     loadSound("lose", "https://thevirus-limiter.github.io/shootout-in-space/sound/gameover.wav")
     loadSound ("comet","https://thevirus-limiter.github.io/shootout-in-space/sound/fire-breath.mp3")
     loadSound ("menuMusic","https://thevirus-limiter.github.io/shootout-in-space/sound/diamond-ace-triangles.mp3")
@@ -2495,8 +2557,20 @@
     }
     })*/
     
-    
+    if(chromebook==true){
     const shopUI = add([
+        sprite("shopUI"),
+        pos(962,460),
+        origin("center"),
+        scale(0.8),
+        area(),
+        layer("ui"),
+        "shop"
+    ])
+      //debug.log(shopUI.pos)
+    }
+else if(chromebook==false){
+   const shopUI = add([
         sprite("shopUI"),
         pos(center()),
         origin("center"),
@@ -2505,7 +2579,7 @@
         layer("ui"),
         "shop"
     ])
-    
+}
     const defBuy = add([
         sprite("defbuy"),
         pos(402.5,435),
