@@ -6,13 +6,15 @@
       <meta name="keywords" content="Javascript, Shootout, Space, Game, Fun">
       <meta name="author" content="Rehan Raj">
     </head>
-      <link rel="stylesheet" href="/style.css">
+
+
+      
 <canvas id="myCanvas"></canvas>
     <script type="module">
       
-  var w = window.innerWidth;
-  var h = window.innerHeight;
-  var chromebook = false;
+  //var w = window.innerWidth;
+  //var h = window.innerHeight;
+  //var chromebook = false;
         // import kaboom lib
         import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
         
@@ -20,74 +22,38 @@
         //kaboom();
         
     
-    if(w==1920&&h==929){
-    
-    kaboom({
+ 
+
+    /*kaboom({
       //1366 x 784
-        //width: 1920,
-        //height: 1080,
+        //width: 768,
+        //height: 361,
       //height:h,
       //width:w,
-        //scale:0.8,
+        scale:1,
         scaleMode: "stretch",
         fullscreen: true,
         font: "sinko",
         canvas: document.querySelector("#myCanvas"),
         background: [ 0, 0, 0 ],
-    });
-}
+    });*/
 
-  else if(w==1536&&h==722){
+
     kaboom({
       //1366 x 784
-        //width: 1920,
-        //height: 1080,
+        width: 1920,
+        height: 929,
       //height:h,
       //width:w,
-        scale:0.8,
+        scale:0.68,
         scaleMode: "stretch",
         //fullscreen: true,
         font: "sinko",
         canvas: document.querySelector("#myCanvas"),
         background: [ 0, 0, 0 ],
     });
-}
 
-      else if(w==1366&&h==617){
-    kaboom({
-      //1366 x 784
-        //width: 1920,
-        //height: 1080,
-      //height:h,
-      //width:w,
-        scale:0.71,
-        scaleMode: "stretch",
-        //fullscreen: true,
-        font: "sinko",
-        canvas: document.querySelector("#myCanvas"),
-        background: [ 0, 0, 0 ],
-    });
-        chromebook=true;
-}
-
-else{
- kaboom({
-      //1366 x 784
-        //width: 1920,
-        //height: 1080,
-      //height:h,
-      //width:w,
-        scale:0.5,
-        scaleMode: "stretch",
-        //fullscreen: true,
-        font: "sinko",
-        canvas: document.querySelector("#myCanvas"),
-        background: [ 0, 0, 0 ],
-    });
-        chromebook=true;
-}
   
-
 
       
       //debug.log("width: "+ w + " height: " +h)
@@ -108,7 +74,7 @@ else{
     loadSprite("graystart", "https://thevirus-limiter.github.io/shootout-in-space/sprites/graystart.png")
     loadSprite("credits", "https://thevirus-limiter.github.io/shootout-in-space/sprites/creditsbutton.png")
     loadSprite("settings", "https://thevirus-limiter.github.io/shootout-in-space/sprites/settingsbutton.png")
-    loadSprite("settingsUI", "https://thevirus-limiter.github.io/shootout-in-space/sprites/settingsUI.png")
+    loadSprite("settingsUI", "https://thevirus-limiter.github.io/shootout-in-space/sprites/settingsUI.jpg")
     loadSprite("defbuy", "https://thevirus-limiter.github.io/shootout-in-space/sprites/defBuy.png")
     loadSprite("1buy", "https://thevirus-limiter.github.io/shootout-in-space/sprites/1Buy.jpg")
     loadSprite("2buy", "https://thevirus-limiter.github.io/shootout-in-space/sprites/2buy.jpg")
@@ -130,6 +96,9 @@ else{
     loadSprite("splashBG", "https://thevirus-limiter.github.io/shootout-in-space/sprites/splashBG.png")
     loadSprite("loading","https://thevirus-limiter.github.io/shootout-in-space/sprites/loading.jpg")
     loadSprite("shopUI", "https://thevirus-limiter.github.io/shootout-in-space/sprites/shopUI.png")
+    loadSprite("protip","https://thevirus-limiter.github.io/shootout-in-space/sprites/protip.png")
+    loadSprite("codesButton","https://thevirus-limiter.github.io/shootout-in-space/sprites/codesButton.png")
+    loadSprite("codesUI","https://thevirus-limiter.github.io/shootout-in-space/sprites/codesUI.jpg")
         
     //
     //
@@ -146,28 +115,78 @@ else{
     
     
     let score = 0;
-    let coins = 0;
-    let levelNum =68;
+    //setData("coins", coins)
+    var coins = getData("coins")
+    let levelNum = 0;
     let lives = 3;
     var BULLET_SPEED = 400;
     let diff = 1;
     var heartUpgrade = false;
     var coinsUpgrade = false;
-    var oldCoins = coins;
+    var oldCoins = coins
     var invincible = false;
     var invincibleTime = 0;
     var soundOn = true;
     var SFXsoundOn = true;
     var creditsOpen=false;
+    var codesOpen=false;
     var loadTest = 1;
     var shopOpen=false;
-    var skin = 0;
-    var oneOwned = false;
+    var skin = getData("skin");
+    /*var oneOwned = false;
     var twoOwned = false;
     var threeOwned = false;
     var fourOwned = false;
     var heartOwned = false;
-    var coinsOwned = false;
+    var coinsOwned = false;*/
+    var oneOwned = getData("oneOwned")
+    var twoOwned = getData("twoOwned")
+    var threeOwned = getData("threeOwned")
+    var fourOwned = getData("fourOwned")
+    var heartOwned = getData("heartOwned")
+    var coinsOwned = getData("coinsOwned")
+    var firstTime=false;
+    var lengthNum=0;
+    var code1 = "dev25"
+    var code2 = "sus22"
+    var code3 = "hi23"
+    //var code2Used=false;
+    //var code3Used=false;
+    var code2Used=getData("code2Used")
+    var code3Used=getData("code3Used")
+    var tc = 0;
+    //var invulnerable = false;
+    //localStorage.setItem("test1",100)
+    //debug.log(localStorage.getItem("test1"))
+
+if(skin==null){
+    skin=0;
+}
+if(code2Used==null){
+    code2Used=false;
+}
+if(code3Used==null){
+    code3Used=false;
+}
+
+if(oneOwned==null){
+    oneOwned=false;
+}
+if(twoOwned==null){
+    twoOwned=false;
+}
+if(threeOwned==null){
+    threeOwned=false;
+}
+if(fourOwned==null){
+    fourOwned=false;
+}
+if(heartOwned==null){
+    heartOwned=false;
+}
+if(coinsOwned==null){
+    coinsOwned=false;
+}
     
     const directions = {
       LEFT: "left",
@@ -175,7 +194,7 @@ else{
     }
     let current_direction = directions.LEFT;
     
-    
+    //debug.log("coins: "+ coins+ " skin: "+skin)
 
     scene("tts",()=>{
         layers([
@@ -244,7 +263,7 @@ else{
         volume: 0.25,
         loop: true})
     
-    
+ 
     
     
         onLoad(() => {
@@ -255,6 +274,9 @@ else{
         "bg",
         "logo",
         "meteor",
+        "play",
+        "codesUI",
+        "codesText",
         "ui",
       ], "ui");
     
@@ -296,7 +318,7 @@ else{
     pos(950,560),
     origin("center"),
     scale(0.55),
-    layer("ui"),
+    layer("play"),
     //area(),
     area({ scale: 0.9 }),
     "start"
@@ -305,9 +327,9 @@ else{
     
     
     onKeyPress("c", ()=>{
+        if(codesOpen==false){
         menuMusic.pause();
-    
-     go("credits")
+     go("credits")}
     })
     
     
@@ -316,7 +338,7 @@ else{
     pos(950,560),
     origin("center"),
     scale(0.55),
-    layer("ui"),
+    layer("play"),
     area(),
     //color(200, 20, 55)
     ])
@@ -324,7 +346,7 @@ else{
         sprite("shop"),
         pos(950,800),
         origin("center"),
-        layer("ui"),
+        layer("play"),
         area({ width: 450, height: 200. }),
         scale(0.7),
         "shop"
@@ -400,6 +422,8 @@ else{
     var settingsOpen=false;
     
     onClick("settings", (settings) => {
+        if(codesOpen==false){
+
     if(creditsOpen==false){
     if(settingsOpen==true){
     settingsUI.hidden=true;
@@ -424,7 +448,7 @@ else{
     else{
     musicOff.hidden=false;
     }}
-    }})
+    }}})
     
     onClick("musicOn", (musicOn) => {
         if(settingsOpen==true){
@@ -465,12 +489,14 @@ else{
     })
     
     onClick("start", (start) => {
+        if(codesOpen==false){
         menuMusic.pause()
         if(settingsOpen==false&&creditsOpen==false){
         go("loading")
-        }
+        }}
     })
         onClick("credits", (credits) => {
+            if(codesOpen==false){
         //menuMusic.pause()
         if(settingsOpen==false&&creditsOpen==false){
             menuMusic.pause();
@@ -479,7 +505,7 @@ else{
             
         go("credits")
     
-        }
+        }}
     })
     
     loop(0.5,()=>{
@@ -489,8 +515,13 @@ else{
       }  })
     })
     
+
+    onKeyPress("escape", () => {
+    shake(1)
+})
     
     onKeyPress("s", () => {
+        if(codesOpen==false){
         if(settingsOpen==false&&creditsOpen==false){
             menuMusic.pause();
             shopOpen=true;
@@ -498,9 +529,10 @@ else{
             
         go("shop")
     
-        }
+        }}
     })
     onClick("shop", (shop) => {
+        if(codesOpen==false){
         //menuMusic.pause()
         if(settingsOpen==false&&creditsOpen==false){
             menuMusic.pause();
@@ -509,7 +541,7 @@ else{
             
         go("shop")
     
-        }
+        }}
     })
     
     shopBtn.onUpdate(() => {
@@ -583,6 +615,11 @@ else{
         pos(64, 24),
         layer("ui"),
     ])
+    if(coins==null){
+    coins=0;
+    oldCoins=0;
+    coinsLabel.text=oldCoins;
+}
     
     /*const coinsKLabel = add([
         text(Math.round(oldCoins/100) / 10+"k",{
@@ -1009,14 +1046,249 @@ else{
     
     }
     
+
+    const codesBtn=add([
+        sprite("codesButton"),
+        pos(1780, 830),
+        origin("center"),
+        scale(0.48),
+        area(),
+        "codes"
+    ])
+
+    const codesUI=add([
+    sprite("codesUI"),
+    pos(center()),
+    origin("center"),
+    scale(1.2),
+    layer("codesUI")
+    ])
+    codesUI.hidden=true;
+
+    codesBtn.onUpdate(() => {
+            if (codesBtn.isHovering()) {
+                codesBtn.color = rgb(
+                    128, 126, 121
+                )
+            } else {
+                codesBtn.color = rgb()
+            }
+        })
     
+        onClick("codes", (codes) => {
+    if(creditsOpen==false){
+        if(codesOpen==true){
+            codesOpen=false;
+            codesUI.hidden=true;
+            trueText.hidden=true;
+            falseText.hidden=true;
+            input.hidden=true;
+        }
+        else{
+            firstTime=true;
+        input.text="Type here!"
+        codesOpen=true;
+        codesUI.hidden=false;
+        input.hidden=false;
     
-    
-    
+    }
+    }
+   else{}
     })
+    
+    const trueText = add([
+	pos(725,500),
+	text("[The code worked!].green",{
+		font:"sink",
+		size: 35,
+		lineSpacing: 8,
+		letterSpacing: 4,
+		styles: {
+			"green": {
+				color: rgb(0,160,0),
+			},
+		},
+	})
+])
+const falseText = add([
+	pos(690,500),
+	text("[The code didn't work.].red",{
+		font:"sink",
+		size: 30,
+		lineSpacing: 8,
+		letterSpacing: 4,
+		styles: {
+			"red": {
+				color: rgb(160,0,0),
+			},
+		},
+	})
+])
+const wrongText = add([
+	pos(690,500),
+	text("[You've already used\n this code.].red",{
+		font:"sink",
+		size: 30,
+		lineSpacing: 8,
+		letterSpacing: 4,
+		styles: {
+			"red": {
+				color: rgb(160,0,0),
+			},
+		},
+	})
+])
+wrongText.hidden=true;
+falseText.hidden=true;
+trueText.hidden=true;
+const input = add([
+	pos(795,380),
+    layer("codesText"),
+	// Render text with the text() component
+	firstTime=true,
+	text("Type here!", {
+        
+		// What font to use
+		font: "sink",
+		// It'll wrap to next line if the text width exceeds the width option specified here
+		//width: width() - pad * 2,
+		// The height of character
+		size: 40,
+		lineSpacing: 8,
+		letterSpacing: 4,
+		// Transform each character for special effects
+        transform: (idx, ch) => ({
+        color: (255,255,255)
+    }),
+	}),
+])
+    
+    
+input.hidden=true;
+
+onCharInput((ch) => {
+    if(lengthNum<8){
+	if(firstTime==true){
+        lengthNum=1;
+        input.text=""
+        input.text=ch
+		firstTime=false;
+	}
+	else{
+        lengthNum=lengthNum+1
+	input.text += ch}}
+    else{shake(1)}
+})
+
+onKeyPressRepeat("backspace", () => {
+    if(firstTime==true){
+        lengthNum=1;
+        input.text=""
+        input.text=ch
+		firstTime=false;
+	}
+	input.text = input.text.substring(0, input.text.length - 1)
+    lengthNum=lengthNum-1;
+})
+
+onKeyPress("enter", () => {
+	var answer=""
+	answer=input.text;
+	//input.text = ""
+	codeCheck(answer)
+})
+
+function codeCheck(input){
+	//debug.log(input)
+
+if(input=="dev22"){
+trueText.hidden=false;
+oldCoins=oldCoins+15000;
+setData("coins",oldCoins)
+coinsLabel.text = oldCoins;
+if(SFXsoundOn==true){
+    play("coinPick")
+}
+//debug.log(coins)
+wait(3,()=>{
+	trueText.hidden=true;
+})
+}
+
+else if(input=="sus22"){
+    //debug.log(code2Used)
+	if(code2Used==false){
+code2Used=true;
+setData("code2Used",true)
+	trueText.hidden=false;
+oldCoins=oldCoins+500
+setData("coins",oldCoins)
+coinsLabel.text = oldCoins;
+if(SFXsoundOn==true){
+    play("coinPick")
+}
+//debug.log(coins)
+wait(3,()=>{
+	trueText.hidden=true;
+})
+
+}
+else{shake(1) 
+trueText.hidden=true;
+falseText.hidden=true
+wrongText.hidden=false;
+wait(3,()=>{
+	wrongText.hidden=true;
+})
+}
+}
+
+else if(input=="hi23"){
+	if(code3Used==false){
+code3Used=true;
+setData("code3Used",true)
+	trueText.hidden=false;
+oldCoins=oldCoins+150
+setData("coins",oldCoins)
+coinsLabel.text = oldCoins;
+if(SFXsoundOn==true){
+    play("coinPick")
+}
+//debug.log(coins)
+wait(3,()=>{
+	trueText.hidden=true;
+})
+
+}
+else{shake(1) 
+    trueText.hidden=true;
+falseText.hidden=true
+wrongText.hidden=false;
+wait(3,()=>{
+	wrongText.hidden=true;
+})
+}
+}
+
+else{
+	trueText.hidden=true;
+falseText.hidden=false;
+wait(3,()=>{
+	falseText.hidden=true;})
+}
+
+	
+}
+
+
+    })
+    
+
+    
     
     
     scene("loading",()=>{
+    var protipLuck=randi(0,3)
         layers([
         "bg",
         "loading",
@@ -1029,6 +1301,7 @@ else{
         //color(0, 0, 139)
       ]);
     
+    if(protipLuck==0||protipLuck==1){
       const loading = add([
         sprite("loading"),
         pos(center()),
@@ -1036,7 +1309,18 @@ else{
     ])
     
     wait(0.2,()=>{go("game")})
+}
+
+else if(protipLuck==2){
+      const proTip = add([
+        sprite("protip"),
+        pos(center()),
+        origin("center"),
+        scale(0.6)
+    ])
     
+    wait(1.5,()=>{go("game")})
+}
     })
     
     scene("game", () => {
@@ -1549,8 +1833,12 @@ else{
     function levelUpdate(){
         levelNum = Math.floor(score/5);
         levelText.text = levelNum;
+        if(levelNum<=15){
         BULLET_SPEED = levelNum*100+200
-    
+    }
+        else if(levelNum>15){
+            BULLET_SPEED = 15*100+200
+        }
         if(diff>0.4){
         diff = diff- levelNum/10
     }
@@ -1671,16 +1959,38 @@ else{
     
     //spawnBullet(shooter1.pos)
      if(getShip==0){
+        if(levelNum>10){
         spawnBullet(shooter1.pos);
         shootSound()
+        spawnBullet(shooter1.pos);
+        shootSound()
+    }
+    else if(levelNum<=10){spawnBullet(shooter1.pos);
+        shootSound()}
         }
+
+
         else if(getShip==1){
+            if(levelNum>10){
         spawnBullet(shooter2.pos);
         shootSound()
+        spawnBullet(shooter2.pos);
+        shootSound()
+    }
+    else if(levelNum<=10){spawnBullet(shooter2.pos);
+        shootSound()}
         }
+
+
         else if(getShip==2){
+            if(levelNum>10){
         spawnBullet(shooter3.pos);
         shootSound()
+        spawnBullet(shooter3.pos);
+        shootSound()
+    }
+    else if(levelNum<=10){spawnBullet(shooter3.pos);
+        shootSound()}
     }
     
     
@@ -1760,7 +2070,7 @@ else{
     loop(rand(0.5,1), () => {
        // var coinLuck = 2
         var coinLuck = randi(0,8)
-    console.log(coinLuck);
+    //console.log(coinLuck);
     if(coinLuck==0){
         const playCoin = add([
         sprite("coin"),
@@ -1820,9 +2130,14 @@ else{
     coin.destroy()
     if(coinsUpgrade==true){
         coins=coins+10;
+        setData("coins",coins)
+
     }
     else if(coinsUpgrade==false){
     coins=coins+5;
+    //debug.log(coins)
+    //coins = setData("coins", coins)
+
     }
     //debug.log(coins)
     coinsLabel.text = coins;
@@ -1847,12 +2162,12 @@ else{
     }
     })
     player.onCollide("shieldpowerup", (shield) =>{
-        invincibleTime=4;
+        invincibleTime=4+skin;
         invIcon.hidden=false;
         invText.hidden=false;
         //var powerUpTime=3;
     if(!player.invulnerable){
-    music.pause()
+    //music.pause()
     //debug.log("ouch")
     shield.destroy()
     //lives=lives+1;
@@ -1861,7 +2176,7 @@ else{
     //heartText.text = lives;
     play("coinPick");
     invLogic()
-    music.play()
+    //music.play()
     
     /*loop(1.5,()=>{
         if(invincibleTime<0||invincibleTime==0){
@@ -1882,8 +2197,10 @@ else{
     })
     
     function invLogic(){
-        invincibleTime=3;
+        var secondsNum=3+skin;
+        invincibleTime=3+skin;
     invText.text=invincibleTime
+   if(secondsNum==3){
     wait(1, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
@@ -1894,7 +2211,7 @@ else{
                 invText.text = invincibleTime;
     
             });
-        wait(2, () => {
+            wait(2, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
                 invText.hidden=true;
@@ -1919,8 +2236,285 @@ else{
                 })
     
             });
+        }
+        else if(secondsNum==4){
+    wait(1, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=3;
+                invText.text = invincibleTime;
     
+            });
+            wait(2, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=2;
+                invText.text = invincibleTime;
+    
+            });
+            wait(3, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=1;
+                invText.text = invincibleTime;
+    
+            });
+            wait(4, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+    
+            });
+        }
+        else if(secondsNum==5){
+    wait(1, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=4;
+                invText.text = invincibleTime;
+    
+            });
+            wait(2, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=3;
+                invText.text = invincibleTime;
+    
+            });
+            wait(3, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=2;
+                invText.text = invincibleTime;
+    
+            });
+            wait(4, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=1;
+                invText.text = invincibleTime;
+    
+            });
+            wait(5, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+    
+            });
+        }
+        else if(secondsNum==6){
+    wait(1, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=5;
+                invText.text = invincibleTime;
+    
+            });
+            wait(2, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=4;
+                invText.text = invincibleTime;
+    
+            });
+            wait(3, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=3;
+                invText.text = invincibleTime;
+    
+            });
+            wait(4, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=2;
+                invText.text = invincibleTime;
+    
+            });
+            wait(5, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=1;
+                invText.text = invincibleTime;
+    
+            });
+            wait(6, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+    
+            });
+        }
+
+        else if(secondsNum==7){
+    wait(1, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=6;
+                invText.text = invincibleTime;
+    
+            });
+            wait(2, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=5;
+                invText.text = invincibleTime;
+    
+            });
+            wait(3, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=4;
+                invText.text = invincibleTime;
+    
+            });
+            wait(4, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=3;
+                invText.text = invincibleTime;
+    
+            });
+            wait(5, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=2;
+                invText.text = invincibleTime;
+    
+            });
+            wait(6, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=1;
+                invText.text = invincibleTime;
+    
+            });
+            wait(7, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+    
+            });
+        }
+
     }
+       /* wait(2, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=1;
+                invText.text = invincibleTime;
+    
+            });
+            wait(3, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+            }
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+    
+            });*/
+    
+    
     
     /*loop(0.5,()=>{
         if(invincibleTime<0||invincibleTime==0){
@@ -1932,7 +2526,30 @@ else{
         cleanup()
     }
     })*/
+
     
+
+/* loop(1, () => {
+            if(invincibleTime<0||invincibleTime==0){
+                invincibleTime=0;
+                invText.text = invincibleTime;
+                wait(0.5,()=>{
+                    invIcon.hidden=true;
+                invText.hidden=true;
+                invincible=false;
+                })
+            }
+                
+    else{
+                invincibleTime=invincibleTime-1;
+                invText.text = invincibleTime;
+
+    }
+            });
+    
+            }*/
+
+
     
     function ufoSpawn(ufoPosX, ufoPosY){
        // music.pause()
@@ -1950,7 +2567,8 @@ else{
         ])
         //music.play()
     }
-    
+
+
     loop(rand(2,2.5), () => {
         //var cometNum = randi(0,4)
     var cometNum = randi(0,6)
@@ -1960,7 +2578,7 @@ else{
     ufoSpawn(1850,800)
     }
     
-    else if(cometNum==1){
+    else if(cometNum==1||cometNum==2){
     ufoSpawn(1850, 50)
     }
     
@@ -2030,6 +2648,7 @@ else{
     
         // destroy ship if lives finished
         if (lives<=0) {
+            setData("coins",oldCoins+coins)
             go("gameover")
             music.pause()
         }
@@ -2041,8 +2660,8 @@ else{
             player.hidden = true;
     
         
-        
-            wait(3, () => {
+        var skinHalf = skin/2
+            wait(2+skinHalf, () => {
                 player.invulnerable = false;
                 player.hidden = false;
             });
@@ -2051,7 +2670,11 @@ else{
     
     });
     
-    
+    onKeyPress("escape", () => {
+        setData("coins",oldCoins+coins)
+        shake(1)
+    go("gamequit")
+})
     
     
     
@@ -2405,6 +3028,356 @@ else{
         go("menu") 
     })
         });
+
+
+        scene("gamequit", () => {
+    
+    if(SFXsoundOn==true){
+    play("lose")}
+
+    layers([
+"bg",
+"meteor",
+"ui",
+], "ui");
+
+
+add([
+sprite("backg"),
+scale(2),
+layer("bg")
+]);
+
+
+function spawnMeteor() {
+
+const dir = choose([LEFT, RIGHT])
+
+add([
+sprite("meteor", { flipX: dir.eq(LEFT) }),
+move(dir, rand(20, 60)),
+cleanup(),
+pos(dir.eq(LEFT) ? width() : 0, rand(-20, 800)),
+origin("top"),
+area(),
+//z(-50),
+layer("meteor"),
+scale(rand(0.2,0.4)),
+"meteor"
+])
+
+wait(rand(8, 18), spawnMeteor)
+
+}
+
+
+spawnMeteor();
+
+
+
+const endText = add([
+text("You Quit",{
+    size:80,
+    width:3000,
+    font:"sinko",
+}),
+pos(950,200),
+    origin("center"),
+])
+
+const levelEnd = add([
+text("Level " + levelNum,{
+    size:50,
+    width:3000,
+    font:"sinko",
+}),
+    pos(920,350),
+    origin("center"),
+])
+
+
+const scoreIcon = add([
+sprite("timer"),
+pos(1150, 505),
+scale(0.1)
+])
+
+    const scoreLabel = add([
+text(score,{
+    size:50,
+    width:300,
+    font:"sinko",
+}),
+pos(1210, 505)
+])
+
+
+const restartLabel = add([
+text("Press R to go to the menu",{
+    size:50,
+    width:3000,
+    font:"sinko",
+}),
+pos(450,700)
+])
+
+const coinIcon= add([
+    sprite("coin"),
+    scale("0.1"),
+    pos(600,500)
+    ])
+    const coinsLabel = add([
+text(coins,{
+    size:50,
+    width:300,
+    font:"sinko",
+}),
+pos(660, 505)
+])
+
+
+if(skin==0){
+const miniPlayer = add([
+sprite("defSkin"),
+pos(mousePos()),
+scale(0.2),
+area(),
+body(),
+layer("meteor")
+])
+miniPlayer.hidden=true;
+gravity(50)
+onMouseDown("left",()=>{
+miniPlayer.hidden=false;
+miniPlayer.pos = mousePos()
+})
+/*!onMouseDown("left",()=>{
+const t = time() * 10
+        miniPlayer.color = rgb(
+            wave(0, 255, t),
+            wave(0, 255, t + 2),
+            wave(0, 255, t + 4),
+        )
+})*/
+
+
+
+
+miniPlayer.onCollide("meteor", (meteor) =>{
+if(miniPlayer.hidden==false){
+//music.pause()
+//debug.log("ouch")
+meteor.destroy()
+shake()
+//coins=coins+1;
+//debug.log(coins)
+//coinsLabel.text = coins;
+if(SFXsoundOn==true){
+play("shoot");
+}
+}
+//music.play()
+})
+}
+if(skin==1){
+const miniPlayer = add([
+sprite("skin2"),
+pos(mousePos()),
+scale(0.2),
+area(),
+body(),
+layer("meteor")
+])
+miniPlayer.hidden=true;
+gravity(50)
+onMouseDown("left",()=>{
+miniPlayer.hidden=false;
+miniPlayer.pos = mousePos()
+})
+/*!onMouseDown("left",()=>{
+const t = time() * 10
+        miniPlayer.color = rgb(
+            wave(0, 255, t),
+            wave(0, 255, t + 2),
+            wave(0, 255, t + 4),
+        )
+})*/
+
+
+
+
+miniPlayer.onCollide("meteor", (meteor) =>{
+if(miniPlayer.hidden==false){
+//music.pause()
+//debug.log("ouch")
+meteor.destroy()
+shake()
+//coins=coins+1;
+//debug.log(coins)
+//coinsLabel.text = coins;
+if(SFXsoundOn==true){
+play("shoot");
+}
+}
+//music.play()
+})
+}
+if(skin==2){
+const miniPlayer = add([
+sprite("skin3"),
+pos(mousePos()),
+scale(0.2),
+area(),
+body(),
+layer("meteor")
+])
+
+miniPlayer.hidden=true;
+gravity(50)
+onMouseDown("left",()=>{
+miniPlayer.hidden=false;
+miniPlayer.pos = mousePos()
+})
+/*!onMouseDown("left",()=>{
+const t = time() * 10
+        miniPlayer.color = rgb(
+            wave(0, 255, t),
+            wave(0, 255, t + 2),
+            wave(0, 255, t + 4),
+        )
+})*/
+
+
+
+
+miniPlayer.onCollide("meteor", (meteor) =>{
+if(miniPlayer.hidden==false){
+//music.pause()
+//debug.log("ouch")
+meteor.destroy()
+shake()
+//coins=coins+1;
+//debug.log(coins)
+//coinsLabel.text = coins;
+if(SFXsoundOn==true){
+play("shoot");
+}
+}
+//music.play()
+})
+}
+if(skin==3){
+const miniPlayer = add([
+sprite("skin4"),
+pos(mousePos()),
+scale(0.2),
+area(),
+body(),
+layer("meteor")
+])
+miniPlayer.hidden=true;
+gravity(50)
+onMouseDown("left",()=>{
+miniPlayer.hidden=false;
+miniPlayer.pos = mousePos()
+})
+/*!onMouseDown("left",()=>{
+const t = time() * 10
+        miniPlayer.color = rgb(
+            wave(0, 255, t),
+            wave(0, 255, t + 2),
+            wave(0, 255, t + 4),
+        )
+})*/
+
+
+
+
+miniPlayer.onCollide("meteor", (meteor) =>{
+if(miniPlayer.hidden==false){
+//music.pause()
+//debug.log("ouch")
+meteor.destroy()
+shake()
+//coins=coins+1;
+//debug.log(coins)
+//coinsLabel.text = coins;
+if(SFXsoundOn==true){
+play("shoot");
+}
+}
+//music.play()
+})
+}
+if(skin==4){
+const miniPlayer = add([
+sprite("skin5"),
+pos(mousePos()),
+scale(0.2),
+area(),
+body(),
+layer("meteor")
+])
+miniPlayer.hidden=true;
+gravity(50)
+onMouseDown("left",()=>{
+miniPlayer.hidden=false;
+miniPlayer.pos = mousePos()
+})
+/*!onMouseDown("left",()=>{
+const t = time() * 10
+        miniPlayer.color = rgb(
+            wave(0, 255, t),
+            wave(0, 255, t + 2),
+            wave(0, 255, t + 4),
+        )
+})*/
+
+
+
+
+miniPlayer.onCollide("meteor", (meteor) =>{
+if(miniPlayer.hidden==false){
+//music.pause()
+//debug.log("ouch")
+meteor.destroy()
+shake()
+//coins=coins+1;
+//debug.log(coins)
+//coinsLabel.text = coins;
+if(SFXsoundOn==true){
+play("shoot");
+}
+}
+//music.play()
+})
+}
+
+
+
+
+
+onKeyPress("r", () => {
+oldCoins=oldCoins+coins;
+/*levelNum=0;
+score=0;
+diff=0;
+if(heartUpgrade==true){
+    lives=4;
+}
+else{
+    lives=3;
+}
+go("game")
+});*/
+go("menu")
+});
+wait(30, () => {
+oldCoins=oldCoins+coins
+go("menu") 
+})
+});
+
     
         scene("credits", () => {
             layers([
@@ -2557,10 +3530,12 @@ else{
     }
     })*/
     
+var chromebook = false;
+
     if(chromebook==true){
     const shopUI = add([
         sprite("shopUI"),
-        pos(962,460),
+        pos(center()),
         origin("center"),
         scale(0.8),
         area(),
@@ -2926,8 +3901,10 @@ else if(chromebook==false){
     onClick("heartBuy", (heartBuy)=>{
         if(heartOwned==true){shake(1)}
     if(heartOwned==false){
-    if(oldCoins>=500){
+    if(getData("coins")>=500){
     heartOwned=true;
+    setData("coins",getData("coins")-500)
+    setData("heartOwned",true)
     oldCoins=oldCoins-500;
     heartBuy.hidden=true;
     heartBought.hidden=false;
@@ -2944,8 +3921,10 @@ else if(chromebook==false){
     onClick("4buy", (fourBuy)=>{
         if(fourOwned==true){shake(1)}
         if(fourOwned==false){
-    if(oldCoins>=10000){
+    if(getData("coins")>=10000){
     fourOwned=true;
+    setData("coins",getData("coins")-10000)
+    setData("fourOwned",true)
     oldCoins=oldCoins-10000;
     fourBuy.hidden=true;
     fourBought.hidden=false;
@@ -2961,9 +3940,11 @@ else if(chromebook==false){
     onClick("3buy", (threeBuy)=>{
         if(threeOwned==true){shake(1)}
         if(threeOwned==false){
-    if(oldCoins>=1000){
+    if(getData("coins")>=1000){
     threeOwned=true;
+    setData("coins",getData("coins")-1000)
     oldCoins=oldCoins-1000;
+    setData("threeOwned",true)
     threeBuy.hidden=true;
     threeBought.hidden=false;
     coinsLabel.text=oldCoins;
@@ -2978,8 +3959,10 @@ else if(chromebook==false){
     onClick("coinsBuy", (coinsBuy)=>{
         if(coinsOwned==true){shake(1)}
     if(coinsOwned==false){
-    if(oldCoins>=650){
+    if(getData("coins")>=650){
     coinsOwned=true;
+    setData("coins",getData("coins")-650)
+    setData("coinsOwned",true)
     oldCoins=oldCoins-650;    
     coinsBuy.hidden=true;
     coinsBought.hidden=false;
@@ -2995,8 +3978,10 @@ else if(chromebook==false){
     onClick("2buy", (twobuy)=>{
         if(twoOwned==true){shake(1)}
      if(twoOwned==false){
-    if(oldCoins>=500){
+    if(getData("coins")>=500){
     twoOwned=true;
+    setData("coins",getData("coins")-500)
+    setData("twoOwned",true)
     oldCoins=oldCoins-500;
     twoBuy.hidden=true;
     twoBought.hidden=false;
@@ -3012,8 +3997,11 @@ else if(chromebook==false){
     onClick("1buy", (onebuy)=>{
     if(oneOwned==true){shake(1)}
     if(oneOwned==false){
-    if(oldCoins>=150){
+    if(getData("coins")>=150){
     oneOwned=true;
+    setData("coins",getData("coins")-150)
+    setData("oneOwned",true)
+    //debug.log(oneOwned)
     oldCoins=oldCoins-150;
     onebuy.hidden=true;
     oneBought.hidden=false;
@@ -3064,6 +4052,7 @@ else if(chromebook==false){
         if(skin==0){shake(1)}
     else{
         skin=0;
+        setData("skin",skin)
         defEquip.hidden=true;
         defEquipped.hidden=false;
         if(SFXsoundOn==true){
@@ -3079,6 +4068,7 @@ else if(chromebook==false){
     else{
     if(oneOwned==true){
         skin=1;
+        setData("skin",skin)
         oneEquip.hidden=true;
         oneEquipped.hidden=false;
         if(SFXsoundOn==true){
@@ -3096,6 +4086,7 @@ else if(chromebook==false){
     else{
     if(twoOwned==true){
         skin=2;
+        setData("skin",skin)
         twoEquip.hidden=true;
         twoEquipped.hidden=false;
         if(SFXsoundOn==true){
@@ -3113,6 +4104,7 @@ else if(chromebook==false){
     else{
     if(threeOwned==true){
         skin=3;
+        setData("skin",skin)
         threeEquip.hidden=true;
         threeEquipped.hidden=false;
         if(SFXsoundOn==true){
@@ -3131,6 +4123,7 @@ else if(chromebook==false){
     else{
     if(fourOwned==true){
         skin=4;
+        setData("skin",skin)
         fourEquip.hidden=true;
         fourEquipped.hidden=false;
         if(SFXsoundOn==true){
