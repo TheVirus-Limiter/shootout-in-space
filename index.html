@@ -154,7 +154,8 @@
     //var code3Used=false;
     var code2Used=getData("code2Used")
     var code3Used=getData("code3Used")
-    var tc = 0;
+    var tc = 0;		
+	    var countDownNum=6
     //var invulnerable = false;
     //localStorage.setItem("test1",100)
     //debug.log(localStorage.getItem("test1"))
@@ -195,7 +196,54 @@ if(coinsOwned==null){
     let current_direction = directions.LEFT;
     
     //debug.log("coins: "+ coins+ " skin: "+skin)
+    scene("oldVer",()=>{
+        var gone = false;
+    countDownNum = 6;
+      layers([
+      "bg",
+      "text",
+    ], "text");
+  
+    add([
+      sprite("backg"),
+      scale(2),
+      layer("bg"),
+      //color(0, 0, 139)
+    ]);
 
+
+    const infoText = add([
+      text("Redirecting you to itch.io for the newest version of this game in: " + countDownNum + "\n\n(to avoid the redirect and play the older version, click anywhere)",{
+          size:40,
+          width:1000,
+          font:"sinko",
+      }),
+      pos(center()),
+      origin("center"),
+      layer("text"),
+  ])
+
+
+    if(countDownNum>=0){
+    loop(1,()=>{
+        if(gone==false){
+      countDownNum=countDownNum-1
+      infoText.text="Redirecting you to itch.io for the newest version of this game in: " + countDownNum + "\n\n(to avoid the redirect and play the older version, click anywhere)"
+    }})
+  }
+  onUpdate(()=>{
+if(countDownNum==0){
+    var gone = true;
+    infoText.text=""
+  window.location.href = "https://rehanraj.itch.io/shootout-in-space";
+}
+
+})
+  onTouchStart(() => go("tts"))
+  onClick(() => go("tts"))
+
+
+  })
     scene("tts",()=>{
         layers([
         "bg",
