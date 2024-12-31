@@ -7,8 +7,6 @@
       <meta name="author" content="Rehan Raj">
     </head>
 
-
-      
 <canvas id="myCanvas"></canvas>
     <script type="module">
       
@@ -16,7 +14,7 @@
   //var h = window.innerHeight;
   //var chromebook = false;
         // import kaboom lib
-        import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
+        import kaboom from "https://unpkg.com/kaboom@2000.2.10/dist/kaboom.mjs";
         
         // initialize kaboom context
         //kaboom();
@@ -45,7 +43,7 @@
         height: 929,
       //height:h,
       //width:w,
-        //scale:0.68,
+        scale:0.68,
         scaleMode: "stretch",
         //fullscreen: true,
         font: "sinko",
@@ -57,6 +55,11 @@
 
       
       //debug.log("width: "+ w + " height: " +h)
+    loadSprite("defSkinShield","https://thevirus-limiter.github.io/shootout-in-space/sprites/defSkinShield.png")
+    loadSprite("skin2Shield","https://thevirus-limiter.github.io/shootout-in-space/sprites/skin2Shield.png")
+    loadSprite("skin3Shield","https://thevirus-limiter.github.io/shootout-in-space/sprites/skin2Shield.png")
+    loadSprite("skin4Shield","https://thevirus-limiter.github.io/shootout-in-space/sprites/skin2Shield.png")
+    loadSprite("skin5Shield","https://thevirus-limiter.github.io/shootout-in-space/sprites/skin5Shield.png")
     loadSprite("ufo", "https://cdn-icons-png.flaticon.com/512/1008/1008165.png")
     loadSprite("backg", "https://thevirus-limiter.github.io/shootout-in-space/sprites/bg_space_seamless.png")
     loadSprite("grass1", "https://thevirus-limiter.github.io/shootout-in-space/sprites/grass1.png")
@@ -150,12 +153,14 @@
     var code1 = "dev25"
     var code2 = "sus22"
     var code3 = "hi23"
+    var countDownNum=10;
     //var code2Used=false;
     //var code3Used=false;
     var code2Used=getData("code2Used")
     var code3Used=getData("code3Used")
-    var tc = 0;		
-	    var countDownNum=6
+    var tc = 0;
+    var paused = false;
+    var inspect=false;
     //var invulnerable = false;
     //localStorage.setItem("test1",100)
     //debug.log(localStorage.getItem("test1"))
@@ -194,56 +199,9 @@ if(coinsOwned==null){
       RIGHT: "right"
     }
     let current_direction = directions.LEFT;
+    let bullet_direction = directions.RIGHT;
     
     //debug.log("coins: "+ coins+ " skin: "+skin)
-    scene("oldVer",()=>{
-        var gone = false;
-    countDownNum = 6;
-      layers([
-      "bg",
-      "text",
-    ], "text");
-  
-    add([
-      sprite("backg"),
-      scale(2),
-      layer("bg"),
-      //color(0, 0, 139)
-    ]);
-
-
-    const infoText = add([
-      text("Redirecting you to itch.io for the newest version of this game in: " + countDownNum + "\n\n(to avoid the redirect and play the older version, click anywhere)",{
-          size:40,
-          width:1000,
-          font:"sinko",
-      }),
-      pos(center()),
-      origin("center"),
-      layer("text"),
-  ])
-
-
-    if(countDownNum>=0){
-    loop(1,()=>{
-        if(gone==false){
-      countDownNum=countDownNum-1
-      infoText.text="Redirecting you to itch.io for the newest version of this game in: " + countDownNum + "\n\n(to avoid the redirect and play the older version, click anywhere)"
-    }})
-  }
-  onUpdate(()=>{
-if(countDownNum==0){
-    var gone = true;
-    infoText.text=""
-  window.location.href = "https://rehanraj.itch.io/shootout-in-space";
-}
-
-})
-  onTouchStart(() => go("tts"))
-  onClick(() => go("tts"))
-
-
-  })
     scene("tts",()=>{
         layers([
         "bg",
@@ -296,8 +254,28 @@ if(countDownNum==0){
     
     play("bubbles")
     
-    
+    onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+})
+onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
     wait(1.5,()=>{go("menu")})
+
       
     })
     
@@ -354,6 +332,32 @@ if(countDownNum==0){
     
     wait(rand(6, 12), spawnMeteor)
     }
+        
+
+    onKeyPress("p",()=>{
+      if(codesOpen==false){
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }}
+})
+onKeyPress("i",()=>{
+    if(codesOpen==false){
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }}
+})
+
+
     const logo= add([
     sprite("logo"),
     pos(949,-10),
@@ -1262,6 +1266,32 @@ wait(3,()=>{
 	trueText.hidden=true;
 })
 }
+    if(input=="shane2"){
+trueText.hidden=false;
+oldCoins=oldCoins+10000;
+setData("coins",oldCoins)
+coinsLabel.text = oldCoins;
+if(SFXsoundOn==true){
+    play("coinPick")
+}
+//debug.log(coins)
+wait(3,()=>{
+	trueText.hidden=true;
+})
+}
+     if(input=="ian2"){
+trueText.hidden=false;
+oldCoins=oldCoins+2000;
+setData("coins",oldCoins)
+coinsLabel.text = oldCoins;
+if(SFXsoundOn==true){
+    play("coinPick")
+}
+//debug.log(coins)
+wait(3,()=>{
+	trueText.hidden=true;
+})
+}
 
 else if(input=="sus22"){
     //debug.log(code2Used)
@@ -1361,13 +1391,13 @@ wait(3,()=>{
 
 else if(protipLuck==2){
       const proTip = add([
-        sprite("protip"),
+        sprite("loading"),
         pos(center()),
         origin("center"),
         scale(0.6)
     ])
     
-    wait(1.5,()=>{go("game")})
+    wait(0.7,()=>{go("game")})
 }
     })
     
@@ -1730,6 +1760,7 @@ else if(protipLuck==2){
         "bg",
         "respawnPlatform",
         "meteor",
+        "beam",
         "game",
         "ui",
       ], "game");
@@ -1762,9 +1793,92 @@ else if(protipLuck==2){
     }
     
     
+    
     spawnMeteor();
     
+
+    /*const defSkinShield = add([
+        sprite("defSkinShield"),
+        scale(0.15),
+        area(),
+        body(),
+        origin("bot"),
+        layer("game"),
+        pos(player.pos.x,player.pos.y),
+        "player"
+    ])
+
+    const skin2Shield = add([
+        sprite("skin2Shield"),
+        scale(0.15),
+        area(),
+        body(),
+        origin("bot"),
+        layer("game"),
+        pos(player.pos.x,player.pos.y),
+        "player"
+    ])
+    const skin3Shield = add([
+        sprite("skin3Shield"),
+        scale(0.15),
+        area(),
+        body(),
+        origin("bot"),
+        layer("game"),
+        pos(player.pos.x,player.pos.y),
+        "player"
+    ])
+    const skin4Shield = add([
+        sprite("skin4Shield"),
+        scale(0.15),
+        area(),
+        body(),
+        origin("bot"),
+        layer("game"),
+        pos(player.pos.x,player.pos.y),
+        "player"
+    ])
+    const skin5Shield = add([
+        sprite("skin5Shield"),
+        scale(0.15),
+        area(),
+        body(),
+        origin("bot"),
+        layer("game"),
+        pos(player.pos.x,player.pos.y),
+        "player"
+    ])
+    defSkinShield.hidden=true;
+    skin2Shield.hidden=true;
+    skin3Shield.hidden=true;
+    skin4Shield.hidden=true;
+    skin5Shield.hidden=true;
     
+onUpdate(()=>{
+    if(skin==0){
+        //defSkinShield.pos.x = player.pos.x
+        defSkinShield.pos.y = player.pos.y
+    }
+    else if(skin==1){
+        //skin2Shield.pos.x = player.pos.x
+        skin2Shield.pos.y = player.pos.y
+    }
+    else if(skin==2){
+        //skin3Shield.pos.x = player.pos.x
+        skin3Shield.pos.y = player.pos.y
+    }
+    else if(skin==3){
+       // skin4Shield.pos.x = player.pos.x
+        skin4Shield.pos.y = player.pos.y
+    }
+    else if(skin==4){
+        //skin5Shield.pos.x = player.pos.x
+        skin5Shield.pos.y = player.pos.y
+    }
+})
+*/
+
+
       if(heartUpgrade==true){
         lives=4
     }
@@ -1942,6 +2056,24 @@ else if(protipLuck==2){
     
     
       
+    function spawnBullet(bulletpos) {
+        
+            bulletpos = bulletpos.sub(10,0);
+      
+        add([
+            rect(30, 5),
+            pos(bulletpos),
+            origin("center"),
+            color(255, 0, 0),
+            area(),
+            move(LEFT, BULLET_SPEED),
+            layer("game"),
+            "bullet",
+            "danger"
+            
+        ]);
+    
+        }
       
     
       mouseClick(() => {
@@ -1996,6 +2128,26 @@ else if(protipLuck==2){
     })
     
     
+    function beam(){
+        var getShip = randi(0,3)
+        if(getShip==0){
+            spawnBeam(shooter1.pos)
+            shootSound()
+        }
+        if(getShip==1){
+            spawnBeam(shooter2.pos)
+            shootSound()
+        }
+        if(getShip==2){
+            spawnBeam(shooter3.pos)
+            shootSound()
+        }
+    }
+
+
+
+
+
     function shoot(){
     
         var getShip = randi(0,3)
@@ -2074,28 +2226,90 @@ else if(protipLuck==2){
     shoot();
     cleanup();
     });
-    
+
+    loop(3, () => {
+    var rand = randi(0,7)
+    if(rand==0){
+        if(levelNum>10){
+        beam();
+        }
+    }
+    else{
+    cleanup();}
+    });
     
     onUpdate(() => {
     cleanup()
     })
     
+   /* onKeyDown("e",() =>{
+        //debug.log("hi")
+        if(player.invulnerable==false){
+        shootBullet(player.pos)}
+    })*/
+    onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+    })
+    onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
     
-    
-    function spawnBullet(bulletpos) {
-        if (current_direction == directions.LEFT){
-            bulletpos = bulletpos.sub(10,0);
-        } else if (current_direction == directions.RIGHT){
-            bulletpos = bulletpos.add(10,0);
-        }
+    function shootBullet(playPos) {
+       
+            playPos = playPos.add(10,-50);
         add([
             rect(30, 5),
-            pos(bulletpos),
+            pos(playPos),
             origin("center"),
             color(255, 0, 0),
             area(),
-            move(LEFT, BULLET_SPEED),
-            layer("game"),
+            move(RIGHT, 400),
+            layer("beam"),
+            "goodBullet"
+            //"bullet",
+            //"danger"
+            
+        ]);
+    
+        }
+onCollide("goodBullet","danger",(goodBullet,danger)=>{
+    danger.destroy()
+    shake(1)
+    goodBullet.destroy()
+
+})
+
+
+
+        function spawnBeam(beampos) {
+        /*if (current_direction == directions.LEFT){
+            bulletpos = bulletpos.sub(10,0);
+        } else if (current_direction == directions.RIGHT){
+            bulletpos = bulletpos.add(10,0);
+        }*/
+        add([
+            rect(2000, 10),
+            pos(beampos),
+            origin("right"),
+            color(255, 0, 0),
+            area(),
+            lifespan(2.5),
+            //move(LEFT, BULLET_SPEED),
+            layer("beam"),
             "bullet",
             "danger"
             
@@ -2250,6 +2464,8 @@ else if(protipLuck==2){
     invText.text=invincibleTime
    if(secondsNum==3){
     wait(1, () => {
+        //player.hidden=true;
+        //defSkinShield.hidden=false;
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
                 invText.hidden=true;
@@ -2276,6 +2492,8 @@ else if(protipLuck==2){
                 invincible=false;
             }
                 invincibleTime=0;
+               // player.hidden=false;
+       // defSkinShield.hidden=true;
                 invText.text = invincibleTime;
                 wait(0.5,()=>{
                     invIcon.hidden=true;
@@ -2286,6 +2504,8 @@ else if(protipLuck==2){
             });
         }
         else if(secondsNum==4){
+           // player.hidden=true;
+       // skin2Shield.hidden=false;
     wait(1, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
@@ -2324,6 +2544,8 @@ else if(protipLuck==2){
             }
                 invincibleTime=0;
                 invText.text = invincibleTime;
+               // player.hidden=false;
+       // skin2Shield.hidden=true;
                 wait(0.5,()=>{
                     invIcon.hidden=true;
                 invText.hidden=true;
@@ -2333,6 +2555,8 @@ else if(protipLuck==2){
             });
         }
         else if(secondsNum==5){
+          //  player.hidden=true;
+      //  skin3Shield.hidden=false;
     wait(1, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
@@ -2381,6 +2605,8 @@ else if(protipLuck==2){
             }
                 invincibleTime=0;
                 invText.text = invincibleTime;
+                player.hidden=false;
+       // skin3Shield.hidden=true;
                 wait(0.5,()=>{
                     invIcon.hidden=true;
                 invText.hidden=true;
@@ -2390,6 +2616,8 @@ else if(protipLuck==2){
             });
         }
         else if(secondsNum==6){
+         //   player.hidden=true;
+       // skin4Shield.hidden=false;
     wait(1, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
@@ -2448,6 +2676,8 @@ else if(protipLuck==2){
             }
                 invincibleTime=0;
                 invText.text = invincibleTime;
+           //     player.hidden=false;
+       // skin4Shield.hidden=true;
                 wait(0.5,()=>{
                     invIcon.hidden=true;
                 invText.hidden=true;
@@ -2458,6 +2688,8 @@ else if(protipLuck==2){
         }
 
         else if(secondsNum==7){
+        //    player.hidden=true;
+     //   skin5Shield.hidden=false;
     wait(1, () => {
             if(invincibleTime<0||invincibleTime==0){
                 invIcon.hidden=true;
@@ -2526,6 +2758,8 @@ else if(protipLuck==2){
             }
                 invincibleTime=0;
                 invText.text = invincibleTime;
+         //       player.hidden=false;
+      //  skin5Shield.hidden=true;
                 wait(0.5,()=>{
                     invIcon.hidden=true;
                 invText.hidden=true;
@@ -2619,14 +2853,18 @@ else if(protipLuck==2){
 
     loop(rand(2,2.5), () => {
         //var cometNum = randi(0,4)
+   
     var cometNum = randi(0,6)
     //debug.log(cometNum)
     
     if(cometNum==0){
+        if(player.invulnerable==false){
     ufoSpawn(1850,800)
+        }
     }
     
     else if(cometNum==1||cometNum==2){
+       
     ufoSpawn(1850, 50)
     }
     
@@ -2639,10 +2877,7 @@ else if(protipLuck==2){
     //coinsLabel.destroy()
             
     onCollide("player", "danger", (p, d) => {
-            if(player.invulnerable==false){
-            d.destroy()
-        }
-        else{}
+        d.destroy()
             p.trigger("damage");
     });
     
@@ -2772,7 +3007,26 @@ else if(protipLuck==2){
     
     spawnMeteor();
     
-    
+    onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+})
+onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
     
         const endText = add([
         text("Game Over",{
@@ -3121,7 +3375,26 @@ wait(rand(8, 18), spawnMeteor)
 
 spawnMeteor();
 
-
+onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+})
+onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
 
 const endText = add([
 text("You Quit",{
@@ -3462,7 +3735,26 @@ go("menu")
     
     }
     
-    
+    onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+})
+onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
     //spawnMeteor();
     
     const creditsText=add([
@@ -3568,7 +3860,26 @@ go("menu")
     
     spawnMeteor();
     
-    
+    onKeyPress("p",()=>{
+        if(paused==false){
+            paused=true;
+        debug.paused = true;
+    }
+    else if(paused==true){
+        paused=false;
+        debug.paused=false;
+    }
+})
+onKeyPress("i",()=>{
+        if(inspect==false){
+            inspect=true;
+        debug.inspect = true;
+    }
+    else if(inspect==true){
+        inspect=false;
+        debug.inspect=false;
+    }
+})
     
     /*onClick("meteor", (meteor)=>{
     meteor.destroy()
@@ -3926,6 +4237,11 @@ else if(chromebook==false){
     onClick("exitIcon",(exit)=>{
         music.pause()
         go("menu")
+    })
+
+    onKeyPress("escape",()=>{
+        music.pause()
+        go("menu") 
     })
     
     
@@ -4319,7 +4635,7 @@ else if(chromebook==false){
     
         });
     
-    go("oldVer")
+    go("tts")
     
     
     </script>
